@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Jogo da Velha Animado</title>
+<title>Jogo da Velha Profissional</title>
 <style>
   body {
     display: flex;
@@ -11,69 +11,112 @@
     align-items: center;
     justify-content: center;
     height: 100vh;
-    font-family: Arial, sans-serif;
-    background-color: #f5f5f5;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #f5f5f5, #dcdcdc);
   }
+
   h1 {
-    margin-bottom: 20px;
+    margin-bottom: 30px;
+    font-size: 2.5em;
+    color: #333;
+    text-shadow: 1px 1px #fff;
   }
+
   #game {
     display: grid;
-    grid-template-columns: repeat(3, 100px);
-    grid-template-rows: repeat(3, 100px);
-    gap: 5px;
+    grid-template-columns: repeat(3, 120px);
+    grid-template-rows: repeat(3, 120px);
+    gap: 10px;
     position: relative;
   }
+
   .cell {
-    width: 100px;
-    height: 100px;
-    background-color: #fff;
+    width: 120px;
+    height: 120px;
+    background: #fff;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 2.5em;
+    font-size: 3em;
     cursor: pointer;
-    border: 2px solid #333;
+    border-radius: 15px;
+    box-shadow: 2px 2px 10px rgba(0,0,0,0.2);
+    transition: transform 0.2s, background 0.3s;
     position: relative;
   }
+
   .cell:hover {
-    background-color: #e0e0e0;
+    transform: scale(1.05);
+    background: #f0f0f0;
   }
+
   .X {
     color: red;
+    animation: drawX 0.3s ease forwards;
   }
+
   .O {
     color: blue;
+    animation: drawO 0.3s ease forwards;
   }
-  .win-effect {
-    position: absolute;
-    font-size: 4em;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    opacity: 0;
-    animation: draw 0.8s forwards;
+
+  @keyframes drawX {
+    0% { opacity: 0; transform: scale(0.5) rotate(-45deg);}
+    100% { opacity: 1; transform: scale(1) rotate(0);}
   }
-  @keyframes draw {
-    0% { opacity: 0; transform: translate(-50%, -50%) scale(0.5) rotate(-30deg);}
-    50% { opacity: 1; transform: translate(-50%, -50%) scale(1.2) rotate(10deg);}
-    100% { opacity: 1; transform: translate(-50%, -50%) scale(1) rotate(0);}
-  }
-  #message {
-    margin-top: 20px;
-    font-size: 1.5em;
-    opacity: 0;
-    animation: fadeIn 1s forwards;
-  }
-  @keyframes fadeIn {
+
+  @keyframes drawO {
     0% { opacity: 0; transform: scale(0.5);}
     100% { opacity: 1; transform: scale(1);}
+  }
+
+  #message {
+    margin-top: 25px;
+    font-size: 1.8em;
+    color: #333;
+    opacity: 0;
+    transition: opacity 0.5s;
+  }
+
+  .line {
+    position: absolute;
+    background: gold;
+    height: 6px;
+    border-radius: 5px;
+    transform-origin: left;
+    animation: drawLine 0.5s forwards;
+  }
+
+  @keyframes drawLine {
+    0% { width: 0; }
+    100% { width: 100%; }
+  }
+
+  button {
+    margin-top: 20px;
+    padding: 12px 25px;
+    font-size: 1em;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    background: #333;
+    color: #fff;
+    transition: background 0.3s;
+  }
+
+  button:hover {
+    background: #555;
+  }
+
+  @media(max-width: 500px){
+    #game { grid-template-columns: repeat(3, 80px); grid-template-rows: repeat(3, 80px); gap: 5px;}
+    .cell { width: 80px; height: 80px; font-size: 2em;}
   }
 </style>
 </head>
 <body>
 
-<h1>Jogo da Velha Animado</h1>
+<h1>Jogo da Velha Profissional</h1>
 <div id="game">
   <div class="cell" data-index="0"></div>
   <div class="cell" data-index="1"></div>
@@ -85,25 +128,29 @@
   <div class="cell" data-index="7"></div>
   <div class="cell" data-index="8"></div>
 </div>
+
 <div id="message"></div>
+<button id="reset">Reiniciar</button>
 
 <script>
 const cells = document.querySelectorAll('.cell');
 const message = document.getElementById('message');
+const gameContainer = document.getElementById('game');
+const resetBtn = document.getElementById('reset');
 
 let currentPlayer = 'X';
-let gameState = ['', '', '', '', '', '', '', '', ''];
+let gameState = Array(9).fill('');
 let gameActive = true;
 
 const winningConditions = [
-  [0,1,2], [3,4,5], [6,7,8],
-  [0,3,6], [1,4,7], [2,5,8],
-  [0,4,8], [2,4,6]
+  [0,1,2],[3,4,5],[6,7,8],
+  [0,3,6],[1,4,7],[2,5,8],
+  [0,4,8],[2,4,6]
 ];
 
-function handleCellClick(e) {
-  const index = e.target.getAttribute('data-index');
-  if (gameState[index] !== '' || !gameActive) return;
+function handleClick(e){
+  const index = e.target.dataset.index;
+  if(gameState[index] !== '' || !gameActive) return;
 
   gameState[index] = currentPlayer;
   e.target.textContent = currentPlayer;
@@ -112,57 +159,83 @@ function handleCellClick(e) {
   checkResult();
 }
 
-function checkResult() {
+function checkResult(){
   let roundWon = false;
+  let winCondition = null;
 
-  for (const condition of winningConditions) {
-    const [a, b, c] = condition;
-    if (gameState[a] && gameState[a] === gameState[b] && gameState[a] === gameState[c]) {
+  for(const condition of winningConditions){
+    const [a,b,c] = condition;
+    if(gameState[a] && gameState[a] === gameState[b] && gameState[a] === gameState[c]){
       roundWon = true;
-      showWinEffect(currentPlayer);
+      winCondition = condition;
       break;
     }
   }
 
-  if (roundWon) {
+  if(roundWon){
+    showWinLine(winCondition);
+    message.textContent = `Jogador ${currentPlayer} venceu!`;
+    message.style.opacity = 1;
     gameActive = false;
-    setTimeout(resetGame, 2000); // reinicia automaticamente após 2s
+    setTimeout(resetGame, 2500);
     return;
   }
 
-  if (!gameState.includes('')) {
+  if(!gameState.includes('')){
     message.textContent = 'DEU VELHA!';
-    message.style.opacity = 0;
-    message.style.animation = 'fadeIn 0.8s forwards';
+    message.style.opacity = 1;
     gameActive = false;
-    setTimeout(resetGame, 2000);
+    setTimeout(resetGame, 2500);
     return;
   }
 
   currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
 }
 
-function resetGame() {
-  gameState = ['', '', '', '', '', '', '', '', ''];
+function resetGame(){
+  gameState.fill('');
   gameActive = true;
   currentPlayer = 'X';
   cells.forEach(cell => {
     cell.textContent = '';
-    cell.classList.remove('X', 'O');
+    cell.classList.remove('X','O');
   });
-  message.textContent = '';
+  message.style.opacity = 0;
+  document.querySelectorAll('.line').forEach(l => l.remove());
 }
 
-function showWinEffect(player) {
-  const effect = document.createElement('div');
-  effect.classList.add('win-effect');
-  effect.textContent = player;
-  effect.style.color = player === 'X' ? 'red' : 'blue';
-  document.getElementById('game').appendChild(effect);
-  setTimeout(() => effect.remove(), 1500);
+function showWinLine([a,b,c]){
+  const line = document.createElement('div');
+  line.classList.add('line');
+
+  const positions = [
+    {top:0,left:0},{top:0,left:120},{top:0,left:240},
+    {top:120,left:0},{top:120,left:120},{top:120,left:240},
+    {top:240,left:0},{top:240,left:120},{top:240,left:240}
+  ];
+
+  const start = positions[a];
+  const end = positions[c];
+  const dx = end.left - start.left;
+  const dy = end.top - start.top;
+  const length = Math.sqrt(dx*dx + dy*dy) + 120; // +120 para cobrir a célula central
+
+  line.style.width = '0';
+  line.style.height = '6px';
+  line.style.background = 'gold';
+  line.style.position = 'absolute';
+  line.style.top = (start.top+60)+'px';
+  line.style.left = (start.left+60)+'px';
+  const angle = Math.atan2(dy, dx) * 180 / Math.PI;
+  line.style.transform = `rotate(${angle}deg) translateX(-50%)`;
+  line.style.transformOrigin = 'left';
+  gameContainer.appendChild(line);
+
+  setTimeout(()=>line.style.width=length+'px',10);
 }
 
-cells.forEach(cell => cell.addEventListener('click', handleCellClick));
+cells.forEach(cell => cell.addEventListener('click', handleClick));
+resetBtn.addEventListener('click', resetGame);
 </script>
 
 </body>
