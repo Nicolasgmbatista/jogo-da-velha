@@ -80,7 +80,7 @@
 
   .line {
     position: absolute;
-    background: gold;
+    background: black; /* Linha preta */
     height: 6px;
     border-radius: 5px;
     transform-origin: left;
@@ -216,19 +216,24 @@ function showWinLine([a,b,c]){
 
   const start = positions[a];
   const end = positions[c];
+
+  // Ajuste centralizado
+  const midX = (start.left + end.left) / 2 + 60; // centraliza
+  const midY = (start.top + end.top) / 2 + 60;
+
   const dx = end.left - start.left;
   const dy = end.top - start.top;
-  const length = Math.sqrt(dx*dx + dy*dy) + 120; // +120 para cobrir a célula central
+  const length = Math.sqrt(dx*dx + dy*dy) + 120;
 
   line.style.width = '0';
   line.style.height = '6px';
-  line.style.background = 'gold';
+  line.style.background = 'black';
   line.style.position = 'absolute';
-  line.style.top = (start.top+60)+'px';
-  line.style.left = (start.left+60)+'px';
+  line.style.top = midY + 'px';
+  line.style.left = midX + 'px';
   const angle = Math.atan2(dy, dx) * 180 / Math.PI;
   line.style.transform = `rotate(${angle}deg) translateX(-50%)`;
-  line.style.transformOrigin = 'left';
+  line.style.transformOrigin = 'center';
   gameContainer.appendChild(line);
 
   setTimeout(()=>line.style.width=length+'px',10);
