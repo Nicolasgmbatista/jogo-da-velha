@@ -50,46 +50,21 @@
     background: #f0f0f0;
   }
 
-  .X {
-    color: red;
-    animation: drawX 0.3s ease forwards;
-  }
+  .X { color: red; animation: drawX 0.3s ease forwards; }
+  .O { color: blue; animation: drawO 0.3s ease forwards; }
 
-  .O {
-    color: blue;
-    animation: drawO 0.3s ease forwards;
-  }
+  @keyframes drawX { 0% { opacity: 0; transform: scale(0.5) rotate(-45deg);} 100% { opacity: 1; transform: scale(1) rotate(0);} }
+  @keyframes drawO { 0% { opacity: 0; transform: scale(0.5);} 100% { opacity: 1; transform: scale(1);} }
 
-  @keyframes drawX {
-    0% { opacity: 0; transform: scale(0.5) rotate(-45deg);}
-    100% { opacity: 1; transform: scale(1) rotate(0);}
-  }
-
-  @keyframes drawO {
-    0% { opacity: 0; transform: scale(0.5);}
-    100% { opacity: 1; transform: scale(1);}
-  }
-
-  #message {
-    margin-top: 25px;
-    font-size: 1.8em;
-    color: #333;
-    opacity: 0;
-    transition: opacity 0.5s;
-  }
+  #message { margin-top: 25px; font-size: 1.8em; color: #333; opacity: 0; transition: opacity 0.5s; }
 
   .line {
     position: absolute;
-    background: black; /* Linha preta */
+    background: black;
     height: 6px;
     border-radius: 5px;
-    transform-origin: left;
-    animation: drawLine 0.5s forwards;
-  }
-
-  @keyframes drawLine {
-    0% { width: 0; }
-    100% { width: 100%; }
+    transform-origin: center;
+    transition: width 0.5s ease;
   }
 
   button {
@@ -103,10 +78,7 @@
     color: #fff;
     transition: background 0.3s;
   }
-
-  button:hover {
-    background: #555;
-  }
+  button:hover { background: #555; }
 
   @media(max-width: 500px){
     #game { grid-template-columns: repeat(3, 80px); grid-template-rows: repeat(3, 80px); gap: 5px;}
@@ -208,35 +180,31 @@ function showWinLine([a,b,c]){
   const line = document.createElement('div');
   line.classList.add('line');
 
-  const positions = [
-    {top:0,left:0},{top:0,left:120},{top:0,left:240},
-    {top:120,left:0},{top:120,left:120},{top:120,left:240},
-    {top:240,left:0},{top:240,left:120},{top:240,left:240}
-  ];
+  const rectA = cells[a].getBoundingClientRect();
+  const rectC = cells[c].getBoundingClientRect();
+  const containerRect = gameContainer.getBoundingClientRect();
 
-  const start = positions[a];
-  const end = positions[c];
+  const startX = rectA.left + rectA.width/2 - containerRect.left;
+  const startY = rectA.top + rectA.height/2 - containerRect.top;
+  const endX = rectC.left + rectC.width/2 - containerRect.left;
+  const endY = rectC.top + rectC.height/2 - containerRect.top;
 
-  // Ajuste centralizado
-  const midX = (start.left + end.left) / 2 + 60; // centraliza
-  const midY = (start.top + end.top) / 2 + 60;
-
-  const dx = end.left - start.left;
-  const dy = end.top - start.top;
-  const length = Math.sqrt(dx*dx + dy*dy) + 120;
+  const dx = endX - startX;
+  const dy = endY - startY;
+  const length = Math.sqrt(dx*dx + dy*dy);
 
   line.style.width = '0';
   line.style.height = '6px';
   line.style.background = 'black';
   line.style.position = 'absolute';
-  line.style.top = midY + 'px';
-  line.style.left = midX + 'px';
+  line.style.top = (startY + dy/2) + 'px';
+  line.style.left = (startX + dx/2) + 'px';
   const angle = Math.atan2(dy, dx) * 180 / Math.PI;
   line.style.transform = `rotate(${angle}deg) translateX(-50%)`;
   line.style.transformOrigin = 'center';
   gameContainer.appendChild(line);
 
-  setTimeout(()=>line.style.width=length+'px',10);
+  setTimeout(()=>line.style.width = length + 'px',10);
 }
 
 cells.forEach(cell => cell.addEventListener('click', handleClick));
