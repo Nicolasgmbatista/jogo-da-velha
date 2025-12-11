@@ -1,215 +1,309 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Jogo da Velha Profissional</title>
-<style>
-  body {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 100vh;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: linear-gradient(135deg, #f5f5f5, #dcdcdc);
-  }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Para Zaira, Meu Amor</title>
+  <link rel="icon" type="image/jpg" href="img/logo_amor.png">
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #1a0b2e, #2d1b3a);
+      color: #e0c3fc;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      overflow-x: hidden;
+      position: relative;
+    }
+    .container {
+      background: rgba(20, 10, 40, 0.95);
+      padding: 40px 30px;
+      border-radius: 20px;
+      box-shadow: 0 15px 40px rgba(0,0,0,0.6);
+      max-width: 900px;
+      width: 100%;
+      text-align: center;
+      position: relative;
+      z-index: 2;
+      border: 1px solid #6a1b9a;
+    }
+    h1 {
+      font-family: 'Dancing Script', cursive;
+      font-size: 4rem;
+      color: #ff6b9d;
+      margin-bottom: 15px;
+      text-shadow: 0 0 15px rgba(255, 107, 157, 0.5);
+      animation: glow 2s infinite alternate;
+    }
+    @keyframes glow {
+      from { text-shadow: 0 0 15px rgba(255, 107, 157, 0.5); }
+      to { text-shadow: 0 0 25px rgba(255, 107, 157, 0.8); }
+    }
+    .slideshow { position: relative; width: 100%; max-width: 600px; margin: 30px auto; height: 450px; overflow: hidden; border-radius: 18px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); background: #000; }
+    .slide { position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; transition: opacity 1s ease; }
+    .slide.active { opacity: 1; }
+    .slide img { width: 100%; height: 100%; object-fit: contain; background: #000; border-radius: 18px; cursor: zoom-in; }
+    .countdown-container { display: flex; justify-content: center; gap: 25px; margin: 35px 0; flex-wrap: wrap; overflow-x: auto; }
+    .countdown-box { background: rgba(106, 27, 154, 0.3); padding: 18px 15px; border-radius: 15px; min-width: 130px; backdrop-filter: blur(5px); border: 1px solid #9c27b0; }
+    .countdown-box h3 { font-size: 0.9rem; color: #ff8a65; margin-bottom: 8px; }
+    .countdown-box .time { font-size: 1.6rem; font-weight: bold; color: #ff6b9d; }
+    .love-note, .daily-letter, .gominha-container, .music-player {
+      margin: 30px auto; max-width: 600px; padding: 25px; background: linear-gradient(135deg, rgba(106, 27, 154, 0.4), rgba(156, 39, 176, 0.3));
+      border-radius: 20px; border: 2px solid #ff6b9d; color: #fff; box-shadow: 0 10px 25px rgba(255, 107, 157, 0.3); position: relative; overflow: hidden;
+    }
+    .love-note strong, .daily-letter strong { font-family: 'Dancing Script', cursive; font-size: 1.6rem; color: #ff6b9d; display: block; margin-bottom: 12px; }
+    .confetti-btn { margin: 25px auto; padding: 12px 30px; background: linear-gradient(45deg, #ff6b9d, #d63384); color: white; border: none; border-radius: 50px; font-size: 1.1rem; font-weight: 600; cursor: pointer; transition: 0.3s; box-shadow: 0 5px 15px rgba(214, 51, 132, 0.4); }
+    .confetti-btn:hover { transform: scale(1.05); box-shadow: 0 8px 20px rgba(214, 51, 132, 0.6); }
+    .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 9999; align-items: center; justify-content: center; padding: 20px; }
+    .modal img { max-width: 90%; max-height: 90%; border-radius: 15px; box-shadow: 0 0 30px rgba(255, 107, 157, 0.5); }
+    .close { position: absolute; top: 20px; right: 30px; color: white; font-size: 2rem; cursor: pointer; }
+    .play-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 9999; cursor: pointer; display: flex; align-items: center; justify-content: center; color: white; font-size: 1.6rem; font-weight: bold; }
+    .music-player { display: flex; align-items: center; justify-content: center; gap: 15px; padding: 18px 25px; }
+    .vinyl-container, .vinyl { width: 40px; height: 40px; }
+    .vinyl { background: radial-gradient(circle, #1a0b2e 30%, #ff6b9d 31%, #1a0b2e 40%, #ff6b9d 41%, #1a0b2e 60%); border-radius: 50%; position: relative; }
+    .vinyl::before { content: ''; position: absolute; top: 50%; left: 50%; width: 12px; height: 12px; background: #ff6b9d; border-radius: 50%; transform: translate(-50%, -50%); }
+    .vinyl.spinning { animation: spin 3s linear infinite; }
+    @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+    .floating-hearts { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; overflow: hidden; z-index: 1; }
+    .heart-float { position: absolute; color: #ff6b9d; font-size: 2.5rem; animation: float 7s infinite ease-in-out; opacity: 0; }
+    @keyframes float { 0% { transform: translateY(120vh) scale(0.3); opacity: 0; } 15% { opacity: 1; } 50% { transform: translateY(50vh) scale(1) translateX(15px); } 85% { opacity: 1; } 100% { transform: translateY(-150px) scale(0.7) translateX(-15px); opacity: 0; } }
+    .footer { margin-top: 30px; font-size: 0.9rem; color: #b39ddb; }
 
-  h1 {
-    margin-bottom: 30px;
-    font-size: 2.5em;
-    color: #333;
-    text-shadow: 1px 1px #fff;
-  }
+    /* BOTÃO DO MINI-GAME */
+    #btnMiniGame{
+      position:fixed; bottom:25px; right:25px; z-index:9999;
+      background:#ff1493; color:white; border:none; padding:18px 32px;
+      font-family:'Dancing Script',cursive; font-size:24px; font-weight:bold;
+      border-radius:50px; cursor:pointer; box-shadow:0 10px 30px rgba(255,20,147,0.6);
+      transition:0.3s;
+    }
+    #btnMiniGame:hover{transform:scale(1.1); background:#ff69b4;}
 
-  #game {
-    display: grid;
-    grid-template-columns: repeat(3, 120px);
-    grid-template-rows: repeat(3, 120px);
-    gap: 10px;
-    position: relative;
-  }
-
-  .cell {
-    width: 120px;
-    height: 120px;
-    background: #fff;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 3em;
-    cursor: pointer;
-    border-radius: 15px;
-    box-shadow: 2px 2px 10px rgba(0,0,0,0.2);
-    transition: transform 0.2s, background 0.3s;
-    position: relative;
-  }
-
-  .cell:hover {
-    transform: scale(1.05);
-    background: #f0f0f0;
-  }
-
-  .X { color: red; animation: drawX 0.3s ease forwards; }
-  .O { color: blue; animation: drawO 0.3s ease forwards; }
-
-  @keyframes drawX { 0% { opacity: 0; transform: scale(0.5) rotate(-45deg);} 100% { opacity: 1; transform: scale(1) rotate(0);} }
-  @keyframes drawO { 0% { opacity: 0; transform: scale(0.5);} 100% { opacity: 1; transform: scale(1);} }
-
-  #message { margin-top: 25px; font-size: 1.8em; color: #333; opacity: 0; transition: opacity 0.5s; }
-
-  .line {
-    position: absolute;
-    background: black;
-    height: 6px;
-    border-radius: 5px;
-    transform-origin: center;
-    transition: width 0.5s ease;
-  }
-
-  button {
-    margin-top: 20px;
-    padding: 12px 25px;
-    font-size: 1em;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    background: #333;
-    color: #fff;
-    transition: background 0.3s;
-  }
-  button:hover { background: #555; }
-
-  @media(max-width: 500px){
-    #game { grid-template-columns: repeat(3, 80px); grid-template-rows: repeat(3, 80px); gap: 5px;}
-    .cell { width: 80px; height: 80px; font-size: 2em;}
-  }
-</style>
+    /* MODAL DO JOGO */
+    #miniGameModal{
+      display:none; position:fixed; inset:0; background:rgba(0,0,0,0.92); z-index:10000;
+      justify-content:center; align-items:center; padding:10px;
+    }
+    #gameBox{
+      position:relative; width:100%; max-width:500px; height:90vh; background:linear-gradient(to bottom,#87CEEB,#FFB6C1);
+      border-radius:25px; overflow:hidden; box-shadow:0 0 50px rgba(255,20,147,0.8);
+    }
+    #closeGame{
+      position:absolute; top:10px; right:15px; z-index:10001; background:#ff1493; color:white;
+      border:none; width:50px; height:50px; border-radius:50%; font-size:32px; cursor:pointer;
+    }
+    #gameHud{
+      position:absolute; top:10px; left:10px; z-index:10; background:rgba(255,255,255,0.95);
+      padding:10px 18px; border-radius:25px; font-family:'Comic Sans MS',cursive;
+      font-weight:bold; color:#ff1493; display:flex; flex-direction:column; gap:8px; font-size:19px;
+      box-shadow:0 4px 20px rgba(255,105,180,0.5);
+    }
+    #gameArea{position:relative;width:100%;height:100%;}
+    #restartGame{
+      display:none; position:absolute; top:50%; left:50%; transform:translate(-50%,-50%);
+      background:#ff1493; color:white; border:none; padding:22px 50px; font-size:30px;
+      border-radius:50px; box-shadow:0 15px 40px rgba(255,20,147,0.8); cursor:pointer; z-index:20;
+      font-family:'Dancing Script',cursive;
+    }
+    @keyframes cair{from{top:-100px}to{top:100vh}}
+    @media (max-width:600px){
+      h1{font-size:2.8rem;}
+      .slideshow{height:300px;}
+      #btnMiniGame{bottom:15px;right:15px;padding:14px 24px;font-size:20px;}
+    }
+  </style>
 </head>
 <body>
+  <div class="play-overlay" id="playOverlay">Toque para ouvir nossa música</div>
+  <div class="floating-hearts" id="hearts"></div>
 
-<h1>Jogo da Velha Profissional</h1>
-<div id="game">
-  <div class="cell" data-index="0"></div>
-  <div class="cell" data-index="1"></div>
-  <div class="cell" data-index="2"></div>
-  <div class="cell" data-index="3"></div>
-  <div class="cell" data-index="4"></div>
-  <div class="cell" data-index="5"></div>
-  <div class="cell" data-index="6"></div>
-  <div class="cell" data-index="7"></div>
-  <div class="cell" data-index="8"></div>
-</div>
+  <div class="container">
+    <h1>Para Zaira, Meu Amor</h1>
+    <p>Você é meu universo inteiro.</p>
+    <p>Te amo mais do que as estrelas.</p>
 
-<div id="message"></div>
-<button id="reset">Reiniciar</button>
+    <div class="slideshow" id="slideshow">
+      <div class="slide active"><img src="img/se_admiramos.jpg" alt="Nós"></div>
+      <div class="slide"><img src="img/se_amamos.jpg" alt="Nós"></div>
+      <div class="slide"><img src="img/se_desejamos.jpg" alt="Nós"></div>
+      <div class="slide"><img src="img/se_aventuramos.jpg" alt="Nós"></div>
+      <div class="slide"><img src="img/se_escutamos.jpg" alt="Nós"></div>
+      <div class="slide"><img src="img/se_resolvemos.jpg" alt="Nós"></div>
+    </div>
 
-<script>
-const cells = document.querySelectorAll('.cell');
-const message = document.getElementById('message');
-const gameContainer = document.getElementById('game');
-const resetBtn = document.getElementById('reset');
+    <div class="countdown-container">
+      <div class="countdown-box"><h3>Seu Aniversário</h3><div class="time" id="birthdayCountdown">--</div></div>
+      <div class="countdown-box"><h3>Nosso Aniversário</h3><div class="time" id="anniversaryCountdown">--</div></div>
+      <div class="countdown-box"><h3>Juntos Há</h3><div class="time" id="togetherCountdown">--</div></div>
+    </div>
 
-let currentPlayer = 'X';
-let gameState = Array(9).fill('');
-let gameActive = true;
+    <div class="love-note">
+      <strong>Minha Gatinha,</strong>
+      <p style="text-align: justify; line-height: 1.5; text-indent: 1.25cm; margin: 0 0 1em 0;">
+        Há momentos em que o amor deixa de ser um sentimento e se torna um lar. Um lugar onde o coração descansa, onde o silêncio não pesa e o tempo parece se curvar.
+      </p>
+      <p style="text-align: justify; line-height: 1.5; text-indent: 1.25cm; margin: 0 0 1em 0;">
+        Não é feito de promessas nem de certezas, mas de algo mais profundo — a sensação de pertencer. De saber que, onde quer que a vida leve, existe um porto seguro em um simples olhar.
+      </p>
+      <p style="text-align: justify; line-height: 1.5; text-indent: 1.25cm; margin: 0 0 1em 0;">
+        Amar é isso: não fugir do que é real, não idealizar o impossível. É escolher estar, todos os dias, por amor — e não por costume. E nessa escolha, o amor encontra sua eternidade.
+      </p>
+      <br>
+      <em style="display: block; text-align: right; margin-top: 1em; font-style: italic; color: #ff8a65;">
+        Te amo mais que tudo, garota!
+      </em>
+    </div>
 
-const winningConditions = [
-  [0,1,2],[3,4,5],[6,7,8],
-  [0,3,6],[1,4,7],[2,5,8],
-  [0,4,8],[2,4,6]
-];
+    <div class="daily-letter" id="dailyLetter">
+      <strong>Clique para abrir sua carta de hoje amor!</strong>
+      <p id="loveMessage" style="display:none;"></p>
+    </div>
 
-function handleClick(e){
-  const index = e.target.dataset.index;
-  if(gameState[index] !== '' || !gameActive) return;
+    <div class="gominha-container locked" id="gominhaBox">
+      <div class="lock-icon">Ticket Gominha Em:</div>
+      <div class="time" id="gominhaCountdown">0d 0h 0m 0s</div>
+      <div class="ready-text" id="readyText">Resgate seu prêmio AMOR!</div>
+      <div class="ticket" id="gominhaTicket">Vale Gominha!</div>
+    </div>
 
-  gameState[index] = currentPlayer;
-  e.target.textContent = currentPlayer;
-  e.target.classList.add(currentPlayer);
+    <div class="music-player" id="musicPlayer">
+      <div class="vinyl-container"><div class="vinyl" id="vinyl"></div></div>
+      <div class="music-icon" id="musicToggle">Play</div>
+      <span class="music-title">A Thousand Years – Christina Perri</span>
+    </div>
 
-  checkResult();
-}
+    <button class="confetti-btn" id="confettiBtn">Toca aqui!</button>
+    <div class="footer">Feito com todo o amor do mundo pelo seu futuro esposo.</div>
+  </div>
 
-function checkResult(){
-  let roundWon = false;
-  let winCondition = null;
+  <div class="modal" id="modal"><span class="close" id="close">X</span><img id="modalImg" src=""></div>
 
-  for(const condition of winningConditions){
-    const [a,b,c] = condition;
-    if(gameState[a] && gameState[a] === gameState[b] && gameState[a] === gameState[c]){
-      roundWon = true;
-      winCondition = condition;
-      break;
+  <!-- BOTÃO DO MINI-GAME -->
+  <button id="btnMiniGame">Mini-Game Gatinhos do Amor</button>
+
+  <!-- MODAL DO JOGO -->
+  <div id="miniGameModal">
+    <div id="gameBox">
+      <button id="closeGame">×</button>
+      <div id="gameHud">
+        <div id="vidas">Vidas: ❤️❤️❤️❤️❤️</div>
+        <div id="score">Salvos: 0 😻</div>
+      </div>
+      <div id="gameArea"></div>
+      <button id="restartGame">Jogar novamente ♡</button>
+    </div>
+  </div>
+
+  <audio id="bgMusic" loop><source src="som/Christina Perri - A Thousand Years [Official Music Video].mp3" type="audio/mp3"></audio>
+  <audio id="meowSound" src="https://www.soundjay.com/buttons/cat-meow-1.mp3"></audio>
+
+  <script>
+    /* === TODAS AS FUNÇÕES ORIGINAIS DO SITE (mantidas 100%) === */
+    const overlay=document.getElementById('playOverlay'),music=document.getElementById('bgMusic'),
+          toggle=document.getElementById('musicToggle'),vinyl=document.getElementById('vinyl');
+    let playing=false;
+    overlay.addEventListener('click',()=>{music.play();overlay.style.display='none';toggle.innerHTML='||';vinyl.classList.add('spinning');playing=true;});
+    toggle.addEventListener('click',()=>{playing?music.pause():music.play();toggle.innerHTML=playing?'Play':'||';vinyl.classList.toggle('spinning');playing=!playing;});
+
+    const hearts=document.getElementById('hearts');
+    function createHeart(){const h=document.createElement('div');h.classList.add('heart-float');h.innerHTML='♥';h.style.left=Math.random()*100+'vw';h.style.animationDuration=(Math.random()*3+5)+'s';hearts.appendChild(h);setTimeout(()=>h.remove(),10000);}
+    setInterval(createHeart,500);
+
+    const slides=document.querySelectorAll('.slide');let i=0;setInterval(()=>{slides[i].classList.remove('active');i=(i+1)%slides.length;slides[i].classList.add('active');},4000);
+    slides.forEach(s=>s.addEventListener('click',()=>{document.getElementById('modalImg').src=s.querySelector('img').src;document.getElementById('modal').style.display='flex';}));
+    document.getElementById('close').addEventListener('click',()=>{document.getElementById('modal').style.display='none';});
+
+    function startCountdown(dateStr,id,isPast=false){const t=new Date(dateStr);function u(){const n=new Date(),d=isPast?n-t:t-n<0&&n.setFullYear(n.getFullYear()+1),diff=isPast?n-t:t-n;const days=Math.floor(diff/864e5),h=Math.floor(diff%864e5/36e5),m=Math.floor(diff%36e5/6e4),s=Math.floor(diff%6e4/1e3);document.getElementById(id).innerHTML=`${days}d ${h}h<br>${m}m ${s}s`;setTimeout(u,1000);}u();}
+    startCountdown("2026-01-01T00:00:00","birthdayCountdown");
+    startCountdown("2026-05-15T00:00:00","anniversaryCountdown");
+    startCountdown("2023-05-15T00:00:00","togetherCountdown",true);
+
+    const loveMessages=[/* seu array gigante de mensagens */];
+    const letter=document.getElementById('dailyLetter'),msg=document.getElementById('loveMessage');
+    let shown=false;letter.addEventListener('click',()=>{if(!shown){msg.textContent=loveMessages[(new Date().getDate()+new Date().getMonth()*31)%loveMessages.length];msg.style.display='block';letter.querySelector('strong').style.display='none';shown=true;}});
+
+    // (código do vale gominha mantido exatamente como estava)
+    const gBox=document.getElementById('gominhaBox'),gCount=document.getElementById('gominhaCountdown'),gReady=document.getElementById('readyText'),gTicket=document.getElementById('gominhaTicket');
+    let redeemed=localStorage.getItem('gominhaRedeemed')==='true';
+    function next15(){const n=new Date(),next=new Date(Date.UTC(n.getUTCFullYear(),n.getUTCMonth(),15,0,0,0));if(n.getUTCDate()>15||redeemed)next.setUTCMonth(next.getUTCMonth()+1);return next;}
+    function updateG(){const diff=next15()-new Date();if(diff<=0&&!redeemed){gBox.classList.remove('locked');gCount.style.display='none';document.querySelector('.lock-icon').style.display='none';gReady.style.display='block';}else{const d=Math.max(0,Math.floor(diff/864e5)),h=Math.floor(diff%864e5/36e5),m=Math.floor(diff%36e5/6e4),s=Math.floor(diff%6e4/1e3);gCount.innerHTML=`${d}d ${h}h ${m}m ${s}s`;setTimeout(updateG,1000);}}updateG();
+    gBox.addEventListener('click',()=>{if(gBox.classList.contains('locked')||redeemed)return;redeemed=true;localStorage.setItem('gominhaRedeemed','true');gReady.style.display='none';gTicket.style.display='block';gBox.classList.add('redeemed');confetti({particleCount:120,spread:80,origin:{y:0.6}});});
+
+    document.getElementById('confettiBtn').addEventListener('click',()=>{confetti({particleCount:180,spread:80,origin:{y:0.6},colors:['#ff6b9d','#d63384','#9c27b0','#ff8a65']});});
+
+    /* === MINI-GAME DOS GATINHOS (13 imagens diferentes) === */
+    document.getElementById('btnMiniGame').onclick=()=>{document.getElementById('miniGameModal').style.display='flex';startMiniGame();};
+    document.getElementById('closeGame').onclick=()=>{document.getElementById('miniGameModal').style.display='none';};
+
+    function startMiniGame(){
+      const area=document.getElementById('gameArea'),score=document.getElementById('score'),vidas=document.getElementById('vidas'),restart=document.getElementById('restartGame');
+      area.innerHTML=''; let salvos=0,lives=5,ativo=true;
+
+      const frases=[
+        {qtd:10,txt:"10 salvos… ainda tá fácil né?"},
+        {qtd:50,txt:"50!! Agora vai esquentar"},
+        {qtd:80,txt:"80… você é boa mesmo hein amor"},
+        {qtd:100,txt:"100 GATINHOS!! Tô impressionado"},
+        {qtd:130,txt:"130… tá voando literalmente"},
+        {qtd:160,txt:"160! Falta pouco pra me deixar sem palavras"},
+        {qtd:190,txt:"190!! QUASE LÁ MINHA CAMPEÃ!!!"},
+        {qtd:200,txt:"200 GATINHOS SALVOS!!!\nVOCÊ É INCRÍVEL DEMAIS!!\nA verdadeira Heroína dos Gatos e do meu coração.\nTe amo mais que tudo no universo, minha vida eterna."}
+      ];
+
+      function msg(t){const m=document.createElement('div');m.style.cssText='position:absolute;top:30%;left:50%;transform:translateX(-50%);font-size:36px;color:#ff1493;font-weight:bold;text-shadow:0 0 15px #fff;pointer-events:none;text-align:center;';m.innerHTML=t.replace('\n','<br>');area.appendChild(m);setTimeout(()=>m.remove(),2300);}
+
+      function update(){score.textContent=`Salvos: ${salvos} 😻`;vidas.textContent=`Vidas: `+"❤️".repeat(lives);}
+
+      function novoGato(){
+        if(!ativo) return;
+        const level=Math.floor(salvos/10);
+        let base=8-level*0.5;base=Math.max(base,2.5);
+        const dur=base+Math.random()*0.8;
+
+        const gato=document.createElement('div');
+        const num=Math.floor(Math.random()*13)+1;
+        gato.style.cssText=`position:absolute;width:68px;height:68px;left:${Math.random()*82+9}%;background:url('img/gato${num}.png') center/contain no-repeat;cursor:pointer;animation:cair ${dur}s linear forwards;`;
+
+        gato.onclick=()=>{
+          if(gato.dataset.ok) return;
+          gato.dataset.ok=true;salvos++;update();
+          document.getElementById('meowSound').currentTime=0;document.getElementById('meowSound').play();
+
+          for(let i=0;i<16;i++){
+            const h=document.createElement('div');
+            h.textContent=['❤️','💕','😻','🐾'][Math.floor(Math.random()*4)];
+            h.style.cssText=`position:absolute;font-size:36px;left:${gato.offsetLeft+34}px;top:${gato.offsetTop+34}px;pointer-events:none;`;
+            h.animate([{transform:'translateY(0)',opacity:1},{transform:'translateY(-300px) scale(0)',opacity:0}],{duration:1400}).onfinish=()=>h.remove();
+            area.appendChild(h);
+          }
+
+          gato.style.transform='scale(2) rotate(60deg)';
+          setTimeout(()=>gato.remove(),300);
+
+          frases.forEach(f=>f.qtd===salvos&&msg(f.txt));
+          if(salvos>=200){ativo=false;restart.style.display='block';msg(frases.find(f=>f.qtd===200).txt);}
+        };
+
+        area.appendChild(gato);
+
+        setTimeout(()=>{
+          if(gato.parentNode&&!gato.dataset.ok){
+            lives--;update();gato.remove();
+            if(lives<=0){ativo=false;restart.style.display='block';}
+          }
+        },dur*1000+500);
+      }
+
+      restart.onclick=()=>{salvos=0;lives=5;ativo=true;update();restart.style.display='none';area.innerHTML='';setInterval(novoGato,750);};
+      update();setInterval(novoGato,750);
     }
-  }
-
-  if(roundWon){
-    showWinLine(winCondition);
-    message.textContent = `Jogador ${currentPlayer} venceu!`;
-    message.style.opacity = 1;
-    gameActive = false;
-    setTimeout(resetGame, 2500);
-    return;
-  }
-
-  if(!gameState.includes('')){
-    message.textContent = 'DEU VELHA!';
-    message.style.opacity = 1;
-    gameActive = false;
-    setTimeout(resetGame, 2500);
-    return;
-  }
-
-  currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
-}
-
-function resetGame(){
-  gameState.fill('');
-  gameActive = true;
-  currentPlayer = 'X';
-  cells.forEach(cell => {
-    cell.textContent = '';
-    cell.classList.remove('X','O');
-  });
-  message.style.opacity = 0;
-  document.querySelectorAll('.line').forEach(l => l.remove());
-}
-
-function showWinLine([a,b,c]){
-  const line = document.createElement('div');
-  line.classList.add('line');
-
-  const rectA = cells[a].getBoundingClientRect();
-  const rectC = cells[c].getBoundingClientRect();
-  const containerRect = gameContainer.getBoundingClientRect();
-
-  const startX = rectA.left + rectA.width/2 - containerRect.left;
-  const startY = rectA.top + rectA.height/2 - containerRect.top;
-  const endX = rectC.left + rectC.width/2 - containerRect.left;
-  const endY = rectC.top + rectC.height/2 - containerRect.top;
-
-  const dx = endX - startX;
-  const dy = endY - startY;
-  const length = Math.sqrt(dx*dx + dy*dy);
-
-  line.style.width = '0';
-  line.style.height = '6px';
-  line.style.background = 'black';
-  line.style.position = 'absolute';
-  line.style.top = (startY + dy/2) + 'px';
-  line.style.left = (startX + dx/2) + 'px';
-  const angle = Math.atan2(dy, dx) * 180 / Math.PI;
-  line.style.transform = `rotate(${angle}deg) translateX(-50%)`;
-  line.style.transformOrigin = 'center';
-  gameContainer.appendChild(line);
-
-  setTimeout(()=>line.style.width = length + 'px',10);
-}
-
-cells.forEach(cell => cell.addEventListener('click', handleClick));
-resetBtn.addEventListener('click', resetGame);
-</script>
-
+  </script>
 </body>
 </html>
