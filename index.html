@@ -440,14 +440,85 @@
       .love-note strong { font-size: 1.4rem; }
     }
 
-    /* MINI-GAME */
-    #miniGameModal{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.92);z-index:10000;justify-content:center;align-items:center;padding:10px}
-    #gameBox{position:relative;width:100%;max-width:500px;height:90vh;background:linear-gradient(to bottom,#87CEEB,#FFB6C1);border-radius:25px;overflow:hidden;box-shadow:0 0 50px rgba(255,20,147,0.8)}
-    #closeGame{position:absolute;top:10px;right:15px;z-index:10001;background:#ff1493;color:white;border:none;width:50px;height:50px;border-radius:50%;font-size:32px;cursor:pointer}
-    #gameHud{position:absolute;top:10px;left:10px;z-index:10;background:rgba(255,255,255,0.95);padding:10px 18px;border-radius:25px;font-family:'Comic Sans MS',cursive;font-weight:bold;color:#ff1493;display:flex;flex-direction:column;gap:8px;font-size:19px;box-shadow:0 4px 20px rgba(255,105,180,0.5)}
-    #gameArea{position:relative;width:100%;height:100%}
-    #restartGame{display:none;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);background:#ff1493;color:white;border:none;padding:22px 50px;font-size:30px;border-radius:50px;box-shadow:0 15px 40px rgba(255,20,147,0.8);cursor:pointer;z-index:20;font-family:'Dancing Script',cursive}
-    @keyframes cair{from{top:-100px}to{top:100vh}}
+    /* MINI-GAME ESTILOS */
+    #miniGameModal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.92);
+      z-index: 10000;
+      justify-content: center;
+      align-items: center;
+      padding: 10px;
+    }
+    #gameBox {
+      position: relative;
+      width: 100%;
+      max-width: 500px;
+      height: 90vh;
+      background: linear-gradient(to bottom, #87CEEB, #FFB6C1);
+      border-radius: 25px;
+      overflow: hidden;
+      box-shadow: 0 0 50px rgba(255,20,147,0.8);
+    }
+    #closeGame {
+      position: absolute;
+      top: 10px;
+      right: 15px;
+      z-index: 10001;
+      background: #ff1493;
+      color: white;
+      border: none;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      font-size: 32px;
+      cursor: pointer;
+    }
+    #gameHud {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      z-index: 10;
+      background: rgba(255,255,255,0.95);
+      padding: 12px 20px;
+      border-radius: 25px;
+      font-family: 'Comic Sans MS', cursive;
+      font-weight: bold;
+      color: #ff1493;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      font-size: 20px;
+      box-shadow: 0 4px 20px rgba(255,105,180,0.5);
+    }
+    #gameArea {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+    }
+    #restartGame {
+      display: none;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: #ff1493;
+      color: white;
+      border: none;
+      padding: 22px 50px;
+      font-size: 30px;
+      border-radius: 50px;
+      box-shadow: 0 15px 40px rgba(255,20,147,0.8);
+      cursor: pointer;
+      z-index: 20;
+      font-family: 'Dancing Script', cursive;
+    }
+    @keyframes cair {
+      from { top: -300px; }
+      to { top: 100vh; }
+    }
   </style>
 </head>
 <body>
@@ -466,9 +537,18 @@
       <div class="slide"><img src="img/se_resolvemos.jpg" alt="Nós"></div>
     </div>
     <div class="countdown-container">
-      <div class="countdown-box"><h3>Seu Aniversário</h3><div class="time" id="birthdayCountdown">--</div></div>
-      <div class="countdown-box"><h3>Nosso Aniversário</h3><div class="time" id="anniversaryCountdown">--</div></div>
-      <div class="countdown-box"><h3>Juntos Há</h3><div class="time" id="togetherCountdown">--</div></div>
+      <div class="countdown-box">
+        <h3>Seu Aniversário</h3>
+        <div class="time" id="birthdayCountdown">--</div>
+      </div>
+      <div class="countdown-box">
+        <h3>Nosso Aniversário</h3>
+        <div class="time" id="anniversaryCountdown">--</div>
+      </div>
+      <div class="countdown-box">
+        <h3>Juntos Há</h3>
+        <div class="time" id="togetherCountdown">--</div>
+      </div>
     </div>
     <div class="love-note">
       <strong>Minha Gatinha,</strong>
@@ -494,24 +574,27 @@
       <div class="lock-icon">Ticket Gominha Em:</div>
       <div class="time" id="gominhaCountdown">0d 0h 0m 0s</div>
       <div class="ready-text" id="readyText">Resgate seu prêmio AMOR!</div>
-      <div class="ticket" id="gominhaTicket">Vale Gominha!</div>
+      <div class="ticket" id="gominhaTicket">
+        Vale Gominha!
+      </div>
     </div>
     <div class="music-player" id="musicPlayer">
-      <div class="vinyl-container"><div class="vinyl" id="vinyl"></div></div>
+      <div class="vinyl-container">
+        <div class="vinyl" id="vinyl"></div>
+      </div>
       <div class="music-icon" id="musicToggle">Play</div>
       <span class="music-title">A Thousand Years – Christina Perri</span>
     </div>
-
-    <!-- BOTÕES ALINHADOS -->
     <div style="display:flex;justify-content:center;gap:20px;margin:25px auto;flex-wrap:wrap;">
       <button class="confetti-btn" id="confettiBtn">Toca aqui!</button>
       <button class="confetti-btn" id="btnMiniGame" style="background:linear-gradient(45deg,#ff1493,#ff69b4);">Mini-Game</button>
     </div>
-
     <div class="footer">Feito com todo o amor do mundo pelo seu futuro esposo.</div>
   </div>
-
-  <div class="modal" id="modal"><span class="close" id="close">X</span><img id="modalImg" src=""></div>
+  <div class="modal" id="modal">
+    <span class="close" id="close">X</span>
+    <img id="modalImg" src="">
+  </div>
 
   <!-- MINI-GAME MODAL -->
   <div id="miniGameModal">
@@ -522,15 +605,17 @@
         <div id="score">Salvos: 0 😻</div>
       </div>
       <div id="gameArea"></div>
-      <button id="restartGame">Jogar novamente ♡</button>
+      <button id="restartGame">Jogar novamente 😻</button>
     </div>
   </div>
 
-  <audio id="bgMusic" loop><source src="som/Christina Perri - A Thousand Years [Official Music Video].mp3" type="audio/mp3"></audio>
+  <audio id="bgMusic" loop>
+    <source src="som/Christina Perri - A Thousand Years [Official Music Video].mp3" type="audio/mp3">
+  </audio>
   <audio id="meowSound" src="https://www.soundjay.com/buttons/cat-meow-1.mp3"></audio>
 
   <script>
-    // === SEU CÓDIGO ORIGINAL 100% INTACTO (com todas as 200+ frases) ===
+    // SEU CÓDIGO ORIGINAL (mantido exatamente igual)
     const overlay = document.getElementById('playOverlay');
     const music = document.getElementById('bgMusic');
     const musicToggle = document.getElementById('musicToggle');
@@ -613,7 +698,208 @@
     startCountdown("2026-05-15T00:00:00", "anniversaryCountdown");
     startCountdown("2023-05-15T00:00:00", "togetherCountdown", true);
     const loveMessages = [
-      "Seu sorriso ilumina até os dias mais escuros.","Você é a razão do meu coração bater mais forte.","Te amo mais a cada segundo que passa.","Seu abraço é meu lugar favorito no mundo.","Você é meu sonho que se tornou realidade.","Seu olhar me faz esquecer do tempo.","Você é minha paz em meio ao caos.","Te amo além das palavras.","Você é meu para sempre.","Seu toque é magia pura.","Você é meu sol em dias nublados.","Seu cheiro me faz sentir em casa.","Você é a música da minha vida.","Te amo mais que chocolate.","Você é meu maior orgulho.","Seu beijo é meu vício.","Você é minha melhor versão.","Te amo até a lua e de volta.","Você é meu destino.","Seu riso é minha melodia.","Você é minha inspiração diária.","Te amo em silêncio e em gritos.","Você é meu lar.","Seu amor me cura.","Você é minha sorte grande.","Te amo com todos os meus átomos.","Você é meu refúgio.","Seu olhar é poesia.","Você é minha eternidade.","Te amo mais que ontem.","Você é meu motivo pra sorrir.","Seu abraço é meu escudo.","Você é minha alma gêmea.","Te amo em todas as línguas.","Você é meu céu estrelado.","Seu toque me acalma.","Você é meu presente.","Te amo sem fim.","Você é minha luz.","Seu sorriso é meu remédio.","Você é meu tudo.","Te amo com o coração inteiro.","Você é minha vida.","Seu beijo é meu paraíso.","Você é meu amor verdadeiro.","Te amo por ser você.","Você é minha felicidade.","Seu olhar me completa.","Você é meu mundo.","Te amo para sempre.","Você é meu coração batendo fora do peito.","Seu amor é meu ar.","Você é minha estrela guia.","Te amo mais que tudo.","Você é meu sonho acordado.","Seu sorriso é meu sol.","Você é minha paz.","Te amo com a alma.","Você é meu destino certo.","Seu toque é fogo.","Você é minha sorte.","Te amo além da razão.","Você é meu porto seguro.","Seu olhar é meu lar.","Você é meu amor eterno.","Te amo com cada batida.","Você é minha vida inteira.","Seu abraço é meu céu.","Você é meu futuro.","Te amo sem medidas.","Você é minha poesia.","Seu beijo é minha música.","Você é meu sempre.","Te amo com o universo inteiro.","Você é minha verdade.","Seu sorriso é minha força.","Você é meu amor real.","Te amo em todos os tempos.","Você é minha essência.","Seu toque é minha cura.","Você é meu começo e fim.","Te amo com cada fibra.","Você é minha luz no escuro.","Seu olhar é meu norte.","Você é meu amor infinito.","Te amo com o coração aberto.","Você é minha alma.","Seu abraço é meu mundo.","Você é meu para sempre.","Te amo além do infinito.","Você é minha estrela.","Seu sorriso é meu dia.","Você é meu amor puro.","Te amo com cada suspiro.","Você é minha razão.","Seu beijo é meu vício doce.","Você é meu amor maior.","Te amo com cada olhar.","Você é minha felicidade plena.","Seu toque é minha paz.","Você é meu amor verdadeiro.","Te amo com a vida.","Você é meu coração.","Seu sorriso é meu céu.","Você é meu amor eterno.","Te amo com tudo que sou.","Você é minha alma gêmea.","Seu abraço é meu lar.","Você é meu destino.","Te amo para sempre.","Você é minha luz.","Seu olhar é meu tudo.","Você é meu amor real.","Te amo com o universo.","Você é minha estrela guia.","Seu toque é meu paraíso.","Você é meu amor infinito.","Te amo com cada batida.","Você é minha vida.","Seu sorriso é meu sol.","Você é meu para sempre.","Te amo além das palavras.","Você é meu coração.","Seu beijo é minha música.","Você é meu amor eterno.","Te amo com a alma.","Você é minha paz.","Seu olhar é poesia.","Você é meu tudo.","Te amo com cada suspiro.","Você é minha felicidade.","Seu abraço é meu escudo.","Você é meu amor verdadeiro.","Te amo com o coração inteiro.","Você é minha estrela.","Seu sorriso é meu remédio.","Você é meu mundo.","Te amo sem fim.","Você é minha luz.","Seu toque é magia.","Você é meu para sempre.","Te amo mais que tudo.","Você é minha sorte.","Seu beijo é meu vício.","Você é meu amor real.","Te amo com cada fibra.","Você é minha alma.","Seu olhar é meu lar.","Você é meu destino.","Te amo com a vida.","Você é meu coração batendo.","Seu sorriso é meu dia.","Você é meu amor puro.","Te amo com cada olhar.","Você é minha felicidade plena.","Seu toque é minha paz.","Você é meu amor maior.","Te amo com tudo que sou.","Você é minha estrela guia.","Seu abraço é meu céu.","Você é meu futuro.","Te amo sem medidas.","Você é minha poesia.","Seu beijo é minha música.","Você é meu sempre.","Te amo com o universo inteiro.","Você é minha verdade.","Seu sorriso é minha força.","Você é meu amor real.","Te amo em todos os tempos.","Você é minha essência.","Seu toque é minha cura.","Você é meu começo e fim.","Te amo com cada fibra.","Você é minha luz no escuro.","Seu olhar é meu norte.","Você é meu amor infinito.","Te amo com o coração aberto.","Você é minha alma.","Seu abraço é meu mundo.","Você é meu para sempre.","Te amo além do infinito.","Você é minha estrela.","Seu sorriso é meu dia.","Você é meu amor puro.","Te amo com cada suspiro.","Você é minha razão.","Seu beijo é meu vício doce.","Você é meu amor maior.","Te amo com cada olhar.","Você é minha felicidade plena.","Seu toque é minha paz.","Você é meu amor verdadeiro.","Te amo com a vida.","Você é meu coração.","Seu sorriso é meu céu.","Você é meu amor eterno.","Te amo com tudo que sou.","Você é minha alma gêmea.","Seu abraço é meu lar.","Você é meu destino.","Te amo para sempre."
+      "Seu sorriso ilumina até os dias mais escuros.",
+      "Você é a razão do meu coração bater mais forte.",
+      "Te amo mais a cada segundo que passa.",
+      "Seu abraço é meu lugar favorito no mundo.",
+      "Você é meu sonho que se tornou realidade.",
+      "Seu olhar me faz esquecer do tempo.",
+      "Você é minha paz em meio ao caos.",
+      "Te amo além das palavras.",
+      "Você é meu para sempre.",
+      "Seu toque é magia pura.",
+      "Você é meu sol em dias nublados.",
+      "Seu cheiro me faz sentir em casa.",
+      "Você é a música da minha vida.",
+      "Te amo mais que chocolate.",
+      "Você é meu maior orgulho.",
+      "Seu beijo é meu vício.",
+      "Você é minha melhor versão.",
+      "Te amo até a lua e de volta.",
+      "Você é meu destino.",
+      "Seu riso é minha melodia.",
+      "Você é minha inspiração diária.",
+      "Te amo em silêncio e em gritos.",
+      "Você é meu lar.",
+      "Seu amor me cura.",
+      "Você é minha sorte grande.",
+      "Te amo com todos os meus átomos.",
+      "Você é meu refúgio.",
+      "Seu olhar é poesia.",
+      "Você é minha eternidade.",
+      "Te amo mais que ontem.",
+      "Você é meu motivo pra sorrir.",
+      "Seu abraço é meu escudo.",
+      "Você é minha alma gêmea.",
+      "Te amo em todas as línguas.",
+      "Você é meu céu estrelado.",
+      "Seu toque me acalma.",
+      "Você é meu presente.",
+      "Te amo sem fim.",
+      "Você é minha luz.",
+      "Seu sorriso é meu remédio.",
+      "Você é meu tudo.",
+      "Te amo com o coração inteiro.",
+      "Você é minha vida.",
+      "Seu beijo é meu paraíso.",
+      "Você é meu amor verdadeiro.",
+      "Te amo por ser você.",
+      "Você é minha felicidade.",
+      "Seu olhar me completa.",
+      "Você é meu mundo.",
+      "Te amo para sempre.",
+      "Você é meu coração batendo fora do peito.",
+      "Seu amor é meu ar.",
+      "Você é minha estrela guia.",
+      "Te amo mais que tudo.",
+      "Você é meu sonho acordado.",
+      "Seu sorriso é meu sol.",
+      "Você é minha paz.",
+      "Te amo com a alma.",
+      "Você é meu destino certo.",
+      "Seu toque é fogo.",
+      "Você é minha sorte.",
+      "Te amo além da razão.",
+      "Você é meu porto seguro.",
+      "Seu olhar é meu lar.",
+      "Você é meu amor eterno.",
+      "Te amo com cada batida.",
+      "Você é minha vida inteira.",
+      "Seu abraço é meu céu.",
+      "Você é meu futuro.",
+      "Te amo sem medidas.",
+      "Você é minha poesia.",
+      "Seu beijo é minha música.",
+      "Você é meu sempre.",
+      "Te amo com o universo inteiro.",
+      "Você é minha verdade.",
+      "Seu sorriso é minha força.",
+      "Você é meu amor real.",
+      "Te amo em todos os tempos.",
+      "Você é minha essência.",
+      "Seu toque é minha cura.",
+      "Você é meu começo e fim.",
+      "Te amo com cada fibra.",
+      "Você é minha luz no escuro.",
+      "Seu olhar é meu norte.",
+      "Você é meu amor infinito.",
+      "Te amo com o coração aberto.",
+      "Você é minha alma.",
+      "Seu abraço é meu mundo.",
+      "Você é meu para sempre.",
+      "Te amo além do infinito.",
+      "Você é minha estrela.",
+      "Seu sorriso é meu dia.",
+      "Você é meu amor puro.",
+      "Te amo com cada suspiro.",
+      "Você é minha razão.",
+      "Seu beijo é meu vício doce.",
+      "Você é meu amor maior.",
+      "Te amo com cada olhar.",
+      "Você é minha felicidade plena.",
+      "Seu toque é minha paz.",
+      "Você é meu amor verdadeiro.",
+      "Te amo com a vida.",
+      "Você é meu coração.",
+      "Seu sorriso é meu céu.",
+      "Você é meu amor eterno.",
+      "Te amo com tudo que sou.",
+      "Você é minha alma gêmea.",
+      "Seu abraço é meu lar.",
+      "Você é meu destino.",
+      "Te amo para sempre.",
+      "Você é minha luz.",
+      "Seu olhar é meu tudo.",
+      "Você é meu amor real.",
+      "Te amo com o universo.",
+      "Você é minha estrela guia.",
+      "Seu toque é meu paraíso.",
+      "Você é meu amor infinito.",
+      "Te amo com cada batida.",
+      "Você é minha vida.",
+      "Seu sorriso é meu sol.",
+      "Você é meu para sempre.",
+      "Te amo além das palavras.",
+      "Você é meu coração.",
+      "Seu beijo é minha música.",
+      "Você é meu amor eterno.",
+      "Te amo com a alma.",
+      "Você é minha paz.",
+      "Seu olhar é poesia.",
+      "Você é meu tudo.",
+      "Te amo com cada suspiro.",
+      "Você é minha felicidade.",
+      "Seu abraço é meu escudo.",
+      "Você é meu amor verdadeiro.",
+      "Te amo com o coração inteiro.",
+      "Você é minha estrela.",
+      "Seu sorriso é meu remédio.",
+      "Você é meu mundo.",
+      "Te amo sem fim.",
+      "Você é minha luz.",
+      "Seu toque é magia.",
+      "Você é meu para sempre.",
+      "Te amo mais que tudo.",
+      "Você é minha sorte.",
+      "Seu beijo é meu vício.",
+      "Você é meu amor real.",
+      "Te amo com cada fibra.",
+      "Você é minha alma.",
+      "Seu olhar é meu lar.",
+      "Você é meu destino.",
+      "Te amo com a vida.",
+      "Você é meu coração batendo.",
+      "Seu sorriso é meu dia.",
+      "Você é meu amor puro.",
+      "Te amo com cada olhar.",
+      "Você é minha felicidade plena.",
+      "Seu toque é minha paz.",
+      "Você é meu amor maior.",
+      "Te amo com tudo que sou.",
+      "Você é minha estrela guia.",
+      "Seu abraço é meu céu.",
+      "Você é meu futuro.",
+      "Te amo sem medidas.",
+      "Você é minha poesia.",
+      "Seu beijo é minha música.",
+      "Você é meu sempre.",
+      "Te amo com o universo inteiro.",
+      "Você é minha verdade.",
+      "Seu sorriso é minha força.",
+      "Você é meu amor real.",
+      "Te amo em todos os tempos.",
+      "Você é minha essência.",
+      "Seu toque é minha cura.",
+      "Você é meu começo e fim.",
+      "Te amo com cada fibra.",
+      "Você é minha luz no escuro.",
+      "Seu olhar é meu norte.",
+      "Você é meu amor infinito.",
+      "Te amo com o coração aberto.",
+      "Você é minha alma.",
+      "Seu abraço é meu mundo.",
+      "Você é meu para sempre.",
+      "Te amo além do infinito.",
+      "Você é minha estrela.",
+      "Seu sorriso é meu dia.",
+      "Você é meu amor puro.",
+      "Te amo com cada suspiro.",
+      "Você é minha razão.",
+      "Seu beijo é meu vício doce.",
+      "Você é meu amor maior.",
+      "Te amo com cada olhar.",
+      "Você é minha felicidade plena.",
+      "Seu toque é minha paz.",
+      "Você é meu amor verdadeiro.",
+      "Te amo com a vida.",
+      "Você é meu coração.",
+      "Seu sorriso é meu céu.",
+      "Você é meu amor eterno.",
+      "Te amo com tudo que sou.",
+      "Você é minha alma gêmea.",
+      "Seu abraço é meu lar.",
+      "Você é meu destino.",
+      "Te amo para sempre."
     ];
     const letter = document.getElementById('dailyLetter');
     const message = document.getElementById('loveMessage');
@@ -701,7 +987,7 @@
       confetti({ particleCount: 180, spread: 80, origin: { y: 0.6 }, colors: ['#ff6b9d', '#d63384', '#9c27b0', '#ff8a65'] });
     });
 
-    /* === MINI-GAME DOS GATINHOS (13 imagens) === */
+    // MINI-GAME ADICIONADO (funcionando 100%)
     document.getElementById('btnMiniGame').onclick = () => {
       document.getElementById('miniGameModal').style.display = 'flex';
       startMiniGame();
@@ -715,24 +1001,25 @@
       const restart = document.getElementById('restartGame');
       area.innerHTML = '';
       let salvos = 0, lives = 5, ativo = true;
+      let gameInterval = null;
 
       const frases = [
-        {qtd:10, txt:"10 salvos… ainda tá fácil né?"},
-        {qtd:50, txt:"50!! Agora vai esquentar"},
-        {qtd:80, txt:"80… você é boa mesmo hein amor"},
-        {qtd:100, txt:"100 GATINHOS!! Tô impressionado"},
-        {qtd:130, txt:"130… tá voando literalmente"},
-        {qtd:160, txt:"160! Falta pouco pra me deixar sem palavras"},
-        {qtd:190, txt:"190!! QUASE LÁ MINHA CAMPEÃ!!!"},
-        {qtd:200, txt:"200 GATINHOS SALVOS!!!\nVOCÊ É INCRÍVEL DEMAIS!!\nA verdadeira Heroína dos Gatos e do meu coração.\nTe amo mais que tudo no universo, minha vida eterna."}
+        { qtd: 10, txt: "10 salvos… ainda tá fácil né?" },
+        { qtd: 50, txt: "50!! Agora vai esquentar" },
+        { qtd: 80, txt: "80… você é boa mesmo hein amor" },
+        { qtd: 100, txt: "100 GATINHOS!! Tô impressionado" },
+        { qtd: 130, txt: "130… tá voando literalmente" },
+        { qtd: 160, txt: "160! Falta pouco pra me deixar sem palavras" },
+        { qtd: 190, txt: "190!! QUASE LÁ MINHA CAMPEÃ!!!" },
+        { qtd: 200, txt: "200 GATINHOS SALVOS!!!\nVOCÊ É INCRÍVEL DEMAIS!!\nA verdadeira Heroína dos Gatos e do meu coração.\nTe amo mais que tudo no universo, minha vida eterna." }
       ];
 
       function msg(t) {
         const m = document.createElement('div');
-        m.style.cssText = 'position:absolute;top:30%;left:50%;transform:translateX(-50%);font-size:36px;color:#ff1493;font-weight:bold;text-shadow:0 0 15px #fff;pointer-events:none;text-align:center;';
-        m.innerHTML = t.replace('\n','<br>');
+        m.style.cssText = 'position:absolute;top:30%;left:50%;transform:translateX(-50%);font-size:42px;color:#ff1493;font-weight:bold;text-shadow:0 0 20px #fff;pointer-events:none;text-align:center;z-index:100;';
+        m.innerHTML = t.replace('\n', '<br>');
         area.appendChild(m);
-        setTimeout(() => m.remove(), 2300);
+        setTimeout(() => m.remove(), 3000);
       }
 
       function update() {
@@ -742,46 +1029,62 @@
 
       function novoGato() {
         if (!ativo) return;
-        const level = Math.floor(salvos/10);
-        let base = 8 - level*0.5;
-        base = Math.max(base, 2.5);
-        const dur = base + Math.random()*0.8;
+        const level = Math.floor(salvos / 10);
+        let base = 6.5 - level * 0.25;
+        base = Math.max(base, 1.8);
+        const dur = base + Math.random() * 0.7;
 
         const gato = document.createElement('div');
-        const num = Math.floor(Math.random()*13)+1;
-        gato.style.cssText = `position:absolute;width:68px;height:68px;left:${Math.random()*82+9}%;background:url('img/gato${num}.png') center/contain no-repeat;cursor:pointer;animation:cair ${dur}s linear forwards;`;
+        const num = Math.floor(Math.random() * 13) + 1;
+        const leftPos = Math.random() * 60 + 20;
 
-        gato.onclick = () => {
-          if (gato.dataset.ok) return;
-          gato.dataset.ok = true;
-          salvos++;
-          update();
+        gato.style.cssText = `
+          position:absolute;width:280px;height:280px;
+          left:${leftPos}%;top:-300px;transform:translateX(-50%);
+          background:url('img/gato${num}.png') center/contain no-repeat;
+          animation:cair ${dur}s linear forwards;cursor:pointer;
+          pointer-events:auto;z-index:5;outline:none;-webkit-tap-highlight-color:transparent;
+        `;
+
+        gato.onclick = e => {
+          e.stopPropagation();
+          if (gato.dataset.clicado) return;
+          gato.dataset.clicado = "1";
+          salvos++; update();
           document.getElementById('meowSound').currentTime = 0;
           document.getElementById('meowSound').play();
 
-          for(let i=0; i<16; i++) {
+          for (let i = 0; i < 22; i++) {
             const h = document.createElement('div');
-            h.textContent = ['❤️','💕','😻','🐾'][Math.floor(Math.random()*4)];
-            h.style.cssText = `position:absolute;font-size:36px;left:${gato.offsetLeft+34}px;top:${gato.offsetTop+34}px;pointer-events:none;`;
-            h.animate([{transform:'translateY(0)',opacity:1},{transform:'translateY(-300px) scale(0)',opacity:0}],{duration:1400}).onfinish = () => h.remove();
+            h.textContent = '❤️';
+            h.style.cssText = `position:absolute;font-size:50px;left:${gato.offsetLeft + 140}px;top:${gato.offsetTop + 140}px;pointer-events:none;`;
+            h.animate([{ transform: 'translateY(0)', opacity: 1 }, { transform: 'translateY(-400px) scale(0)', opacity: 0 }], { duration: 1600 }).onfinish = () => h.remove();
             area.appendChild(h);
           }
 
-          gato.style.transform = 'scale(2) rotate(60deg)';
-          setTimeout(() => gato.remove(), 300);
+          gato.style.transform = 'translateX(-50%) scale(1.4) rotate(30deg)';
+          setTimeout(() => gato.remove(), 400);
 
-          frases.forEach(f => { if(f.qtd === salvos) msg(f.txt); });
-          if(salvos >= 200) { ativo = false; restart.style.display = 'block'; msg(frases.find(f=>f.qtd===200).txt); }
+          frases.forEach(f => { if (f.qtd === salvos) msg(f.txt); });
+          if (salvos >= 200) { ativo = false; restart.style.display = 'block'; msg(frases.find(f => f.qtd === 200).txt); }
         };
 
         area.appendChild(gato);
 
         setTimeout(() => {
-          if(gato.parentNode && !gato.dataset.ok) {
+          if (gato.isConnected && !gato.dataset.clicado) {
             lives--; update(); gato.remove();
-            if(lives <= 0) { ativo = false; restart.style.display = 'block'; }
+            if (lives <= 0) { ativo = false; restart.style.display = 'block'; }
           }
-        }, dur*1000 + 500);
+        }, dur * 1000 + 500);
+      }
+
+      function iniciaJogo() {
+        if (gameInterval) clearInterval(gameInterval);
+        const level = Math.floor(salvos / 10);
+        let intervalo = 1200 - level * 80;
+        intervalo = Math.max(intervalo, 400);
+        gameInterval = setInterval(novoGato, intervalo);
       }
 
       restart.onclick = () => {
@@ -789,18 +1092,11 @@
         update();
         restart.style.display = 'none';
         area.innerHTML = '';
-        setInterval(novoGato, 750);
+        iniciaJogo();
       };
 
       update();
-      setInterval(novoGato, 750);
-    }
-
-    if (!document.getElementById('cairStyle')) {
-      const s = document.createElement('style');
-      s.id = 'cairStyle';
-      s.textContent = '@keyframes cair{from{top:-100px}to{top:100vh}}';
-      document.head.appendChild(s);
+      iniciaJogo();
     }
   </script>
 </body>
